@@ -115,33 +115,34 @@ export function Hero() {
         </div>
 
         <div className="mt-4 space-y-2">
-          <div className="overflow-hidden rounded-full border border-border bg-card py-3">
-            <div className="marquee-track gap-8 px-4">
-              {[...tools, ...tools].map((tool, i) => (
+          <div className="overflow-hidden rounded-full border border-border bg-card py-2.5 sm:py-3">
+            <div className="marquee-track gap-6 px-4 sm:gap-8">
+              {[...laneOne, ...laneOne].map((tool, i) => (
                 <span
-                  key={`${tool}-${i}`}
-                  className="flex shrink-0 items-center gap-3 text-sm font-semibold tracking-wide text-muted-foreground uppercase transition-colors hover:text-brand-orange"
+                  key={`front-${tool}-${i}`}
+                  className="flex shrink-0 items-center gap-2.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase transition-colors hover:text-brand-orange sm:gap-3 sm:text-sm"
                 >
-                  <span className="size-1.5 rounded-full bg-brand-orange" />
+                  <span className="size-1.5 shrink-0 rounded-full bg-brand-orange" />
                   {tool}
                 </span>
               ))}
             </div>
           </div>
-          <div className="overflow-hidden rounded-full border border-border bg-secondary/60 py-2.5">
-            <div className="marquee-back gap-8 px-4">
-              {[...tools.slice().reverse(), ...tools.slice().reverse()].map((tool, i) => (
+          <div className="overflow-hidden rounded-full border border-border bg-secondary/60 py-2 sm:py-2.5">
+            <div className="marquee-back gap-6 px-4 sm:gap-8">
+              {[...laneTwo, ...laneTwo].map((tool, i) => (
                 <span
                   key={`back-${tool}-${i}`}
-                  className="flex shrink-0 items-center gap-3 text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase"
+                  className="flex shrink-0 items-center gap-2.5 text-[0.68rem] font-semibold tracking-[0.16em] text-muted-foreground uppercase sm:gap-3 sm:text-xs sm:tracking-[0.18em]"
                 >
-                  <span className="size-1 rounded-full bg-brand-teal" />
+                  <span className="size-1 shrink-0 rounded-full bg-brand-teal" />
                   {tool}
                 </span>
               ))}
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
