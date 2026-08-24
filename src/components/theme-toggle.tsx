@@ -103,16 +103,8 @@ export function ThemeToggle() {
       transition={SURFACE_SPRING}
       className="celestial-toggle grid size-9 shrink-0 place-items-center rounded-full border border-border/70 bg-secondary text-foreground"
     >
-      <motion.span
-        aria-hidden="true"
-        className="celestial-halo"
-        initial={false}
-        variants={{
-          rest: { opacity: 0, scale: 0.55 },
-          active: { opacity: 0.3, scale: 1 },
-        }}
-        transition={{ ...SURFACE_SPRING, damping: 18 }}
-      />
+      {/* Hover halo stays CSS-driven so it can't fight the button spring. */}
+      <span aria-hidden="true" className="celestial-halo" />
 
       <span className="relative grid size-5 place-items-center">
         <AnimatePresence initial={false} mode="popLayout">
