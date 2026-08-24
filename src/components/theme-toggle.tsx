@@ -1,12 +1,30 @@
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, type Transition } from "motion/react";
+import { Moon, Sun } from "lucide-react";
+
+import { sampleSpring } from "@/lib/spring";
 
 const STORAGE_KEY = "theme";
-const RAYS = [0, 45, 90, 135, 180, 225, 270, 315];
+
+/** Snappy but settled — the icon overshoots a hair, then locks in. */
+const ICON_SPRING: Transition = {
+  type: "spring",
+  stiffness: 420,
+  damping: 24,
+  mass: 0.9,
+};
+
+/** Softer spring for the halo/press feedback so it trails the icon. */
+const SURFACE_SPRING: Transition = {
+  type: "spring",
+  stiffness: 320,
+  damping: 26,
+  mass: 0.8,
+};
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const maskId = useId();
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -52,18 +70,19 @@ export function ThemeToggle() {
 
     const transition = startViewTransition.call(document, apply);
 
+    // Physics-driven circular reveal: the pseudo-element only accepts
+    // keyframes, so we replay spring samples linearly.
+    const { values, duration } = sampleSpring({ stiffness: 130, damping: 18, mass: 1 });
+
     transition.ready.then(() => {
-      document.documentElement.animate(
+      root.animate(
         {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${radius}px at ${x}px ${y}px)`,
-          ],
-          opacity: [0.6, 1],
+          clipPath: values.map((p) => `circle(${(radius * p).toFixed(2)}px at ${x}px ${y}px)`),
+          opacity: values.map((p) => Math.min(1, 0.55 + p * 0.8)),
         },
         {
-          duration: 900,
-          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+          duration,
+          easing: "linear",
           pseudoElement: "::view-transition-new(root)",
         },
       );
@@ -71,59 +90,57 @@ export function ThemeToggle() {
   }, [dark]);
 
   return (
-    <button
+    <motion.button
       ref={buttonRef}
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={dark}
       data-mode={dark ? "dark" : "light"}
+      initial={false}
+      whileHover={{ y: -1.5, scale: 1.04 }}
+      whileTap={{ scale: 0.9, y: 0 }}
+      transition={SURFACE_SPRING}
       className="celestial-toggle grid size-9 shrink-0 place-items-center rounded-full border border-border/70 bg-secondary text-foreground"
     >
-      <span aria-hidden="true" className="celestial-halo" />
-      <svg
+      <motion.span
         aria-hidden="true"
-        viewBox="0 0 24 24"
-        className="celestial-svg size-5 overflow-visible"
-        fill="none"
-      >
-        <mask id={maskId}>
-          <rect x="0" y="0" width="24" height="24" fill="white" />
-          {/* Slides across the disc to carve the crescent. */}
-          <circle className="celestial-bite" cx="24" cy="8" r="8.5" fill="black" />
-        </mask>
+        className="celestial-halo"
+        initial={false}
+        variants={{
+          rest: { opacity: 0, scale: 0.55 },
+          active: { opacity: 0.3, scale: 1 },
+        }}
+        transition={{ ...SURFACE_SPRING, damping: 18 }}
+      />
 
-        <g className="celestial-rays" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
-          {RAYS.map((angle, i) => (
-            <line
-              key={angle}
-              x1="12"
-              y1="1.6"
-              x2="12"
-              y2="4.1"
-              style={{
-                transform: `rotate(${angle}deg) scale(var(--ray-scale, 1))`,
-                transformOrigin: "12px 12px",
-                transitionDelay: `${i * 22}ms`,
-              }}
-            />
-          ))}
-        </g>
-
-        <circle
-          className="celestial-body"
-          cx="12"
-          cy="12"
-          r="5.6"
-          fill="currentColor"
-          mask={`url(#${maskId})`}
-        />
-
-        <g className="celestial-stars" fill="currentColor">
-          <circle cx="4.4" cy="5.6" r="0.9" style={{ transitionDelay: "180ms" }} />
-          <circle cx="19.6" cy="18.4" r="0.7" style={{ transitionDelay: "260ms" }} />
-        </g>
-      </svg>
-    </button>
+      <span className="relative grid size-5 place-items-center">
+        <AnimatePresence initial={false} mode="popLayout">
+          {dark ? (
+            <motion.span
+              key="moon"
+              className="absolute inset-0 grid place-items-center"
+              initial={{ rotate: -120, scale: 0.3, opacity: 0, y: 4 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1, y: 0 }}
+              exit={{ rotate: 110, scale: 0.3, opacity: 0, y: -4 }}
+              transition={ICON_SPRING}
+            >
+              <Moon className="size-[1.15rem]" strokeWidth={1.9} />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="sun"
+              className="absolute inset-0 grid place-items-center"
+              initial={{ rotate: 120, scale: 0.3, opacity: 0, y: -4 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1, y: 0 }}
+              exit={{ rotate: -110, scale: 0.3, opacity: 0, y: 4 }}
+              transition={ICON_SPRING}
+            >
+              <Sun className="size-5" strokeWidth={1.9} />
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </span>
+    </motion.button>
   );
 }
