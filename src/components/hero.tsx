@@ -3,6 +3,13 @@ import { AnimatedChars, AnimatedWords, CountUp, Magnetic } from "@/components/mo
 import { Parallax } from "@/components/reveal";
 import { stats, tools } from "@/data/projects";
 
+// Split the stack into two disjoint lanes so no tag repeats between the marquees.
+const uniqueTools = Array.from(new Set(tools));
+const laneOne = uniqueTools.filter((_, i) => i % 2 === 0);
+const laneTwo = uniqueTools.filter((_, i) => i % 2 === 1).reverse();
+
+
+
 export function Hero() {
   return (
     <section id="top" className="px-4 pt-10 sm:px-6 lg:pt-14">
