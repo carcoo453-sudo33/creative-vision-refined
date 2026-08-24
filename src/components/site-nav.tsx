@@ -21,19 +21,21 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6">
+    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <nav
-        className={`mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-border/70 bg-card/85 px-4 py-2.5 backdrop-blur-md transition-all duration-500 sm:px-6 ${
+        className={`mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full border border-border/70 bg-card/85 px-3 py-2 backdrop-blur-md transition-all duration-500 sm:gap-4 sm:px-6 sm:py-2.5 ${
           scrolled
             ? "max-w-4xl shadow-[0_18px_40px_-22px_oklch(0.28_0.05_265_/_0.55)]"
             : "shadow-[var(--shadow-lift)]"
         }`}
       >
-        <a href="#top" className="group flex items-center gap-2.5">
-          <span className="press grid size-8 place-items-center rounded-full bg-primary font-display text-sm font-extrabold text-primary-foreground group-hover:rotate-[-8deg]">
+        <a href="#top" className="group flex min-w-0 items-center gap-2 sm:gap-2.5">
+          <span className="press grid size-8 shrink-0 place-items-center rounded-full bg-primary font-display text-sm font-extrabold text-primary-foreground group-hover:rotate-[-8deg]">
             MS
           </span>
-          <span className="font-display text-sm font-bold tracking-tight">Mostafa Samir</span>
+          <span className="truncate font-display text-sm font-bold tracking-tight">
+            Mostafa Samir
+          </span>
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -49,17 +51,19 @@ export function SiteNav() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
           <a
             href="#contact"
-            className="press sheen inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold tracking-wide text-primary-foreground uppercase"
+            className="press sheen inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-3 py-2 text-[0.7rem] font-semibold tracking-wide whitespace-nowrap text-primary-foreground uppercase sm:px-4 sm:text-xs"
           >
-            <span className="blink-dot size-1.5 rounded-full bg-brand-yellow" />
-            Available Q3 2026
+            <span className="blink-dot size-1.5 shrink-0 rounded-full bg-brand-yellow" />
+            <span className="hidden xs:inline">Available </span>Q3 2026
           </a>
         </div>
       </nav>
+    </header>
+
     </header>
   );
 }
