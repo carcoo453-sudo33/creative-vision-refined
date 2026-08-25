@@ -1,12 +1,12 @@
-# Creative Vision Refined
+# Creative Vision Studio
 
-clone this https://github.com/AminStore/creative-vision-enhancer
+clone this repo https://github.com/aminone070/creative-vision-studio
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/195beadc-d9ef-42db-a0c4-179afa23d996).
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/60a830f0-36bc-4341-9ac4-02fd2902868e).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
