@@ -40,7 +40,7 @@ export function Nav() {
           "mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-500 sm:gap-6 sm:rounded-full sm:px-5 sm:py-3 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
           scrolled || open
             ? "bg-card/85 shadow-soft backdrop-blur-xl"
-            : "bg-transparent",
+            : "text-onmedia bg-transparent",
         )}
       >
         <a href="#top" className="flex min-w-0 items-center gap-2.5">
@@ -49,18 +49,18 @@ export function Nav() {
           </span>
           <span className="min-w-0 font-display text-lg leading-none sm:text-xl">
             <span className="block truncate">Mostafa Samir</span>
-            <span className="mt-0.5 block truncate font-sans text-[0.58rem] tracking-[0.18em] uppercase text-muted-foreground sm:text-[0.62rem]">
+            <span className="mt-0.5 block truncate font-sans text-[0.58rem] tracking-[0.18em] uppercase opacity-70 sm:text-[0.62rem]">
               PropTech Engineering
             </span>
           </span>
         </a>
 
-        <ul className="hidden items-center justify-center gap-6 text-sm whitespace-nowrap text-muted-foreground lg:flex xl:gap-8">
+        <ul className="hidden items-center justify-center gap-6 text-sm whitespace-nowrap opacity-80 lg:flex xl:gap-8">
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="relative py-1 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-right after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:text-foreground hover:after:origin-left hover:after:scale-x-100"
+                className="relative py-1 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-right after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:opacity-100 hover:after:origin-left hover:after:scale-x-100"
               >
                 {l.label}
               </a>

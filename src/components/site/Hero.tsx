@@ -73,8 +73,8 @@ export function Hero() {
 
           {/* Giant wordmark + glass stat cards */}
           <div className="relative">
-            <div className="overflow-hidden">
-              <p className="pointer-events-none flex flex-wrap gap-x-[0.22em] font-display text-[clamp(2.6rem,15vw,13rem)] leading-[0.86] tracking-[-0.02em] uppercase">
+            <div className="overflow-hidden sm:pr-60 lg:pr-64">
+              <p className="pointer-events-none flex flex-wrap gap-x-[0.22em] font-display text-[clamp(2.6rem,12.5vw,10.5rem)] leading-[0.86] tracking-[-0.02em] uppercase">
                 {wordmark.map((word, i) => (
                   <span
                     key={word}
