@@ -75,6 +75,13 @@
 
   --shadow-estate: 0 30px 70px -35px oklch(0.24 0.02 150 / 0.45);
   --shadow-soft: 0 12px 40px -20px oklch(0.24 0.02 150 / 0.3);
+
+  /* Scrollbar (light): warm sand track, deep forest thumb with clay hover */
+  --scrollbar-size: 11px;
+  --scrollbar-track: oklch(0.94 0.016 85);
+  --scrollbar-thumb: oklch(0.62 0.028 150 / 0.55);
+  --scrollbar-thumb-hover: oklch(0.42 0.05 152 / 0.8);
+  --scrollbar-thumb-active: oklch(0.66 0.13 55);
 }
 
 .dark {
@@ -105,6 +112,12 @@
 
   --shadow-estate: 0 30px 70px -35px oklch(0.05 0.02 150 / 0.8);
   --shadow-soft: 0 12px 40px -20px oklch(0.05 0.02 150 / 0.7);
+
+  /* Scrollbar (dark): forest-ink track, warm bone thumb with clay hover */
+  --scrollbar-track: oklch(0.22 0.02 152);
+  --scrollbar-thumb: oklch(0.55 0.02 120 / 0.5);
+  --scrollbar-thumb-active: oklch(0.7 0.13 55);
+  --scrollbar-thumb-hover: oklch(0.78 0.025 90 / 0.75);
 }
 
 html {
@@ -311,5 +324,97 @@ html.dark {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+
+/* ---------- Scrollbars ---------- */
+
+/* Reserve the gutter so opening/closing a scroll container never shifts the
+   layout (and the fixed nav never jumps sideways). */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Firefox */
+html,
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* WebKit / Chromium */
+::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  /* transparent border + background-clip gives the thumb breathing room
+     inside the track instead of a full-bleed slab */
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+  transition: background-color 0.25s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-active);
+}
+
+/* Keyboard users still get a visible focus ring on scroll containers */
+.scroll-soft:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+/* Compact bar on coarse-pointer / small screens where the OS overlays it */
+@media (max-width: 640px), (pointer: coarse) {
+  :root {
+    --scrollbar-size: 7px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-width: 2px;
+  }
+}
+
+/* Opt-in: slim scrollbar for inner panes */
+@utility scroll-soft {
+  overflow: auto;
+  overscroll-behavior: contain;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* Opt-in: fully hidden scrollbar (marquees, carousels) — still scrollable */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 }
